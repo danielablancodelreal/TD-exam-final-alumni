@@ -1,7 +1,7 @@
 
 variable "gcp-project" {
   description = "GCP project"
-  default     = ""
+  default     = "lab5-458007"
 }
 
 variable "gcp-network" {
@@ -22,16 +22,15 @@ variable "gcp-zone" {
 variable "gcp-cluster-name" {
   description = "Cluster name"
   type        = string
-  default     = ""
+  default     = "daniela-cluster"
 }
 
 variable "gcp-node-count" {
   description = "K8s Worker nodes"
-  type        = 
-  default     = 
+  default     = 2
 }
 variable "gcp-node-size" {
   description = "K8s Worker nodes"
   type        = string
-  default     = ""
+  default     = "20 GB"
 }
