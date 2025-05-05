@@ -6,9 +6,9 @@ on:
       - main
 
 env:
-  PROJECT_ID: ${{ vars.GCP_PROJECT_ID }}
-  IMAGE_NAME_WEB: gcr.io/${{ vars.GCP_PROJECT_ID }}/web
-  IMAGE_NAME_STORAGE: gcr.io/${{ vars.GCP_PROJECT_ID }}/storage
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  IMAGE_NAME_WEB: gcr.io/${{ secrets.GCP_PROJECT_ID }}/web
+  IMAGE_NAME_STORAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/storage
   GITHUB_SHA: ${{ github.sha }}
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
