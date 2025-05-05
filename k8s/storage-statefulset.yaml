@@ -1,34 +1,40 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: 
+  name: storage
 spec:
-  serviceName: ""
+  serviceName: "storage"
+  replicas: 2
   updateStrategy:
     type: RollingUpdate
-  replicas: 
   selector:
     matchLabels:
-      app: 
+      app: storage
   template:
     metadata:
       labels:
-        app: 
+        app: storage
     spec:
       containers:
-        - name: 
+        - name: storage
           image: gcr.io/icai2025/storage:latest
-          imagePullPolicy: 
+          imagePullPolicy: Always
           ports:
-            - containerPort: 
+            - containerPort: 3000
+          livenessProbe:
+            httpGet:
+              path: /phrase
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 2
           volumeMounts:
-            - name: 
-              mountPath: 
+            - name: storage-volume
+              mountPath: /data
   volumeClaimTemplates:
     - metadata:
         name: storage-volume
       spec:
-        storageClassName: 
+        storageClassName: standard
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
@@ -39,8 +45,9 @@ kind: Service
 metadata:
   name: storage
 spec:
-  clusterIP: 
   selector:
-    app: 
+    app: storage
+  clusterIP: None
   ports:
-    - port: 
+    - port: 3000
+      targetPort: 3000
