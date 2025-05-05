@@ -38,7 +38,10 @@ jobs:
         docker build -t $IMAGE_NAME_STORAGE:latest source/storage/
         docker push $IMAGE_NAME_STORAGE:$GITHUB_SHA
         docker push $IMAGE_NAME_STORAGE:latest
+        
     - name: Deploy to GKE
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE
+        sed -i "s|gcr.io/${{ secrets.GCP_PROJECT_ID }}/web:latest|$IMAGE_NAME_WEB:$GITHUB_SHA|g" k8s/web-deployment.yaml
+        sed -i "s|gcr.io/${{ secrets.GCP_PROJECT_ID }}/storage:latest|$IMAGE_NAME_STORAGE:$GITHUB_SHA|g" k8s/storage-statefulset.yaml
         kubectl apply -f k8s/
