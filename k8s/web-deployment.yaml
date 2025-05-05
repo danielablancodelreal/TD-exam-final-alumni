@@ -1,41 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: 
+  name: web
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: 
+      app: web
   template:
     metadata:
       labels:
-        app: 
+        app: web
     spec:
       containers:
         - name: web
           image: gcr.io/icai2025/web:latest
-          imagePullPolicy: 
+          imagePullPolicy: Always
           ports:
-            - containerPort: 
+            - containerPort: 3000
           env:
             - name: STORAGE_SVC
               value: ""
           livenessProbe:
             httpGet:
               path: /phrase
-              port:
+              port: 3000
             periodSeconds: 15
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: 
+  name: web-service
 spec:
   selector:
-    app: 
+    app: web
   ports:
-    - protocol: 
+    - protocol: TCP
       port: 80
-      targetPort: 
-  type:
+      targetPort: 3000
+  type: LoadBalancer
